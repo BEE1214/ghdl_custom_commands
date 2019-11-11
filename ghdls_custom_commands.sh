@@ -5,15 +5,32 @@
 ##=- Date:               2019-11-04 -=##
 ##====================================##
 
+# Overveiw of VHDL custom commands
+function ghdlov () {
+    echo syntghdl - syntesis and analysis - optional two files
+    echo runghdl - running code after syntesis
+    echo graphghdl - running code after syntesis with graphical output file
+    echo runsyntghdl - runnig code with syntesis - optional two files
+}
+
 # VHDL syntesis with two possible files.
 function syntghdl () {
-    if [ -z "$2" ]; then
+    if [ -z "$1" ]; then 
+        echo No arguments entered...
+        echo Exiting...
+    elif [ -z "$2" ]; then
+        echo Syntesysing...
         ghdl -s $1.vhd
+        echo Analysis...
         ghdl -a $1.vhd
     else
+        echo Syntesysing $1...
         ghdl -s $1.vhd
+        echo Syntesysing $2...
         ghdl -s $2.vhd
+        echo Analysing $1...
         ghdl -a $1.vhd
+        echo Analysing $2...
         ghdl -a $2.vhd
     fi
 }
