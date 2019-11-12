@@ -5,68 +5,93 @@
 ##=- Date:               2019-11-04 -=##
 ##====================================##
 
-# Overveiw of VHDL custom commands
-function ghdlov () {
-    echo syntghdl - syntesis and analysis - optional two files
-    echo runghdl - running code after syntesis
-    echo graphghdl - running code after syntesis with graphical output file
-    echo runsyntghdl - runnig code with syntesis - optional two files
-}
-
 # VHDL syntesis with two possible files.
-function syntghdl () {
-    if [ -z "$1" ]; then 
-        echo No arguments entered...
-        echo Exiting...
-    elif [ -z "$2" ]; then
-        echo Syntesysing...
-        ghdl -s $1.vhd
-        echo Analysis...
-        ghdl -a $1.vhd
-    else
-        echo Syntesysing $1...
-        ghdl -s $1.vhd
-        echo Syntesysing $2...
-        ghdl -s $2.vhd
-        echo Analysing $1...
-        ghdl -a $1.vhd
-        echo Analysing $2...
-        ghdl -a $2.vhd
-    fi
-}
-
-# Run VHDL code.
 function runghdl () {
-    ghdl -e $1
-    ghdl -r $1
-}
-
-# Run VHDL code with graph exit.
-function graphghdl () {
-    ghdl -e $1
-    ghdl -r $1 --vcd=$1.vcd
-    gtkwave $1.vcd
-}
-
-# Function for full VHDL synthesis and run code.
-# If two argumenst entered, first argument have to be testbench.
-function runsyntghdl () {
-    if [ -z "$2" ]; then
-        ghdl -s $1.vhd
-        ghdl -a $1.vhd
-        ghdl -e $1
-        ghdl -r $1
-    else
-        ghdl -s $1.vhd
-        ghdl -s $2.vhd
-        ghdl -a $1.vhd
-        ghdl -a $2.vhd
-        ghdl -e $1
-        ghdl -r $1 --vcd=$1.vcd
-        # gtkwave $1.vcd
+    if [[ $# -gt 3 ]]; then
+        echo "Too many arguments..."
+        echo "Exiting..."
+        return
     fi
 
-    if [ -f "$1.vcd" ]; then
-        gtkwave $1.vcd
+    iMODULE=$2
+    iTESTBENCH=$3
+    if [ ! -f "$iMODULE.vhd" ] && [ $1 != "-h" ]; then
+        echo "File $iMODULE doesn't exist..."
+        echo "Exiting..."
+        return 1
     fi
+
+    if [ $# -eq 3 ] && [ ! -f "$iTESTBENCH.vhd"]; then 
+        echo "File $iTESTBENCH doesn't exist"
+        echo "Exiting..."
+        return
+    fi
+#============================================================================================# 
+#============================== Case for diferent commands ==================================#
+#============================================================================================# 
+    case "$1" in
+        -s) 
+            if [ -z "$iTESTBENCH" ]; then
+                echo "Syntesysing $iMODULE"
+                ghdl -s $iMODULE.vhd
+            else
+                echo "Syntesysing $iMODULE"
+                ghdl -s $iMODULE.vhd
+                echo "Syntesysing $iTESTBENCH"
+                ghdl -s $iTESTBENCH.vhd
+            fi
+        ;;
+        -a) 
+            if [ -z "$iTESTBENCH" ]; then
+                echo "Syntesysing $iMODULE"
+                ghdl -s $iMODULE.vhd
+                echo "Analysing $iMODULE"
+                ghdl -a $iMODULE.vhd
+            else
+                echo "Syntesysing $iMODULE"
+                ghdl -s $iMODULE.vhd
+                echo "Syntesysing $iTESTBENCH"
+                ghdl -s $iTESTBENCH.vhd
+                echo "Syntesysing $iMODULE"
+                ghdl -a $iMODULE.vhd
+                echo "Syntesysing $TESTBENCH"
+                ghdl -a $iTESTBENCH.vhd
+            fi
+        ;;
+        -r) 
+            echo "Syntesysing $iMODULE"
+            ghdl -s $iMODULE.vhd
+            echo "Syntesysing $iTESTBENCH"
+            ghdl -s $iTESTBENCH.vhd
+            echo "Syntesysing $iMODULE"
+            ghdl -a $iMODULE.vhd
+            echo "Syntesysing $TESTBENCH"
+            ghdl -a $iTESTBENCH.vhd
+            echo "Elaborating $iTESTBENCH"
+            ghdl -e $iTESTBENCH
+            echo "Running $iTETSBENCH"
+            ghdl -r $iTESTBENCH --vcd=$iTESTBENCH.vcd
+            echo "Openning gtkwave"
+            gtkwave $iTESTBENCH.vcd
+        ;;
+
+        -h) if [ -z "$iMODULE" ] && [ -z "$iTESTBENCH" ]; then
+                echo "runghdl -s     syntesis - optional two files"
+                echo "runghdl -a     syntesis and analysis"
+                echo "runghdl -r     running code after syntesis with graphical output file"
+                echo "runghdl -h     show this help"
+            else
+                echo "Wrong arguments"
+                echo "Exiting..."
+                return
+            fi
+        ;;
+        *)  echo "Wrong argument"
+            echo "Exiting..."
+            return
+        ;;
+    esac
+#============================================================================================#    
+#==================================== End of Commands =======================================#
+#============================================================================================#    
 }
