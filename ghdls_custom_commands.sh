@@ -32,47 +32,51 @@ function runghdl () {
     case "$1" in
         -s) 
             if [ -z "$iTESTBENCH" ]; then
-                echo "Syntesysing $iMODULE"
+                echo "Syntesysing $iMODULE.vhd"
                 ghdl -s $iMODULE.vhd
+                echo "Done..."
             else
-                echo "Syntesysing $iMODULE"
+                echo "Syntesysing $iMODULE.vhd"
                 ghdl -s $iMODULE.vhd
-                echo "Syntesysing $iTESTBENCH"
+                echo "Syntesysing $iTESTBENCH.vhd"
                 ghdl -s $iTESTBENCH.vhd
+                echo "Done..."
             fi
         ;;
         -a) 
             if [ -z "$iTESTBENCH" ]; then
-                echo "Syntesysing $iMODULE"
+                echo "Syntesysing $iMODULE.vhd"
                 ghdl -s $iMODULE.vhd
-                echo "Analysing $iMODULE"
+                echo "Analysing $iMODULE.vhd"
                 ghdl -a $iMODULE.vhd
             else
-                echo "Syntesysing $iMODULE"
+                echo "Syntesysing $iMODULE.vhd"
                 ghdl -s $iMODULE.vhd
-                echo "Syntesysing $iTESTBENCH"
+                echo "Syntesysing $iTESTBENCH.vhd"
                 ghdl -s $iTESTBENCH.vhd
-                echo "Syntesysing $iMODULE"
+                echo "Analyzing $iMODULE.vhd"
                 ghdl -a $iMODULE.vhd
-                echo "Syntesysing $TESTBENCH"
+                echo "Analyzing $TESTBENCH.vhd"
                 ghdl -a $iTESTBENCH.vhd
             fi
         ;;
         -r) 
-            echo "Syntesysing $iMODULE"
+            echo "Syntesysing $iMODULE.vhd"
             ghdl -s $iMODULE.vhd
-            echo "Syntesysing $iTESTBENCH"
+            echo "Syntesysing $iTESTBENCH.vhd"
             ghdl -s $iTESTBENCH.vhd
-            echo "Syntesysing $iMODULE"
+            echo "Analyzing $iMODULE.vhd"
             ghdl -a $iMODULE.vhd
-            echo "Syntesysing $TESTBENCH"
+            echo "Analyzing $iTESTBENCH.vhd"
             ghdl -a $iTESTBENCH.vhd
-            echo "Elaborating $iTESTBENCH"
+            echo "Elaborating $iTESTBENCH.vhd"
             ghdl -e $iTESTBENCH
-            echo "Running $iTETSBENCH"
-            ghdl -r $iTESTBENCH --vcd=$iTESTBENCH.vcd
-            echo "Openning gtkwave"
-            gtkwave $iTESTBENCH.vcd
+            echo "Running $iTESTBENCH.vhd"
+            ghdl -r $iTESTBENCH --vcd=$iTESTBENCH.vcd --stop-time=400ns
+            # ghdl -r $iTESTBENCH --stop-time=200ns
+            echo "Done..."
+            # echo "Openning gtkwave"
+            # gtkwave $iTESTBENCH.vcd
         ;;
 
         -h) if [ -z "$iMODULE" ] && [ -z "$iTESTBENCH" ]; then
