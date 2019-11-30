@@ -7,7 +7,7 @@
 
 # VHDL syntesis with two possible files.
 function runghdl () {
-    if [[ $# -gt 3 ]]; then
+    if [[ $# -gt 4 ]]; then
         echo "Too many arguments..."
         echo "Exiting..."
         return
@@ -15,6 +15,7 @@ function runghdl () {
 
     iMODULE=$2
     iTESTBENCH=$3
+    iSTOPTIME=$4
     if [ ! -f "$iMODULE.vhd" ] && [ $1 != "-h" ]; then
         echo "File $iMODULE doesn't exist..."
         echo "Exiting..."
@@ -72,7 +73,11 @@ function runghdl () {
             echo "Elaborating $iTESTBENCH.vhd"
             ghdl -e $iTESTBENCH
             echo "Running $iTESTBENCH.vhd"
-            ghdl -r $iTESTBENCH --vcd=$iTESTBENCH.vcd --stop-time=400ns
+            if [ -z "$iSTOPTIME" ]; then
+                ghdl -r $iTESTBENCH --vcd=$iTESTBENCH.vcd
+            else
+                ghdl -r $iTESTBENCH --vcd=$iTESTBENCH.vcd --stop-time=$iSTOPTIME
+            fi                
             # ghdl -r $iTESTBENCH --stop-time=200ns
             echo "Done..."
             # echo "Openning gtkwave"
