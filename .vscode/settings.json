@@ -1,0 +1,9 @@
+{
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#13322F",
+        "titleBar.activeBackground": "#1A4742",
+        "titleBar.activeForeground": "#F4FBFA"
+    },
+    "workbench.colorTheme": "FlatUI",
+    "workbench.iconTheme": "material-icon-theme"
+}
