@@ -12,5 +12,5 @@ runghdl [option] [Component] [TestBench] [Simulation stop time]
 -h     show this help
 ```
 
-## Describtion
+## Description
 Main purpose is to simplify simulation process with VHDL. Only provides basic options. Command can analyz and generate code for up to 2 files. Second file has to be testbench. Command always need an option.
