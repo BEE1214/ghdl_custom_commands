@@ -49,19 +49,19 @@ function runghdl () {
                 echo "Syntesysing $iMODULE.vhd..."
                 ghdl -s $iMODULE.vhd
                 echo "Analysing $iMODULE.vhd..."
-                ghdl -a -Wa,--32 $iMODULE.vhd
-                # ghdl -a $iMODULE.vhd
+                # ghdl -a -Wa,--32 $iMODULE.vhd
+                ghdl -a $iMODULE.vhd
             else
                 echo "Syntesysing $iMODULE.vhd..."
                 ghdl -s $iMODULE.vhd
                 echo "Syntesysing $iTESTBENCH.vhd..."
                 ghdl -s $iTESTBENCH.vhd
                 echo "Analyzing $iMODULE.vhd..."
-                # ghdl -a $iMODULE.vhd
-                ghdl -a -Wa,--32 $iMODULE.vhd
+                ghdl -a $iMODULE.vhd
+                # ghdl -a -Wa,--32 $iMODULE.vhd
                 echo "Analyzing $TESTBENCH.vhd..."
-                # ghdl -a $iTESTBENCH.vhd
-                ghdl -a -Wa,--32 $iTESTBENCH.vhd
+                ghdl -a $iTESTBENCH.vhd
+                # ghdl -a -Wa,--32 $iTESTBENCH.vhd
             fi
         ;;
         -r) 
@@ -70,13 +70,13 @@ function runghdl () {
             echo "Syntesysing $iTESTBENCH.vhd..."
             ghdl -s $iTESTBENCH.vhd
             echo "Analyzing $iMODULE.vhd..."
-            # ghdl -a $iMODULE.vhd
-            ghdl -a -Wa,--32 $iMODULE.vhd
+            ghdl -a $iMODULE.vhd
+            # ghdl -a -Wa,--32 $iMODULE.vhd
             echo "Analyzing $iTESTBENCH.vhd..."
-            # ghdl -a $iTESTBENCH.vhd
-            ghdl -a -Wa,--32 $iTESTBENCH.vhd
+            ghdl -a $iTESTBENCH.vhd
+            # ghdl -a -Wa,--32 $iTESTBENCH.vhd
             echo "Elaborating $iTESTBENCH.vhd..."
-            ghdl -e -Wa,--32 -Wl,-m32 $iTESTBENCH
+            ghdl -e $iTESTBENCH
             echo "Running $iTESTBENCH.vhd..."
             if [ -z "$iSTOPTIME" ]; then
                 ghdl -r $iTESTBENCH --vcd=$iTESTBENCH.vcd
