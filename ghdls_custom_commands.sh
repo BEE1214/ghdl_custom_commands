@@ -54,10 +54,10 @@ function runghdl () {
             else
                 echo "Syntesysing $iMODULE.vhd..."
                 ghdl -s $iMODULE.vhd
-                echo "Syntesysing $iTESTBENCH.vhd..."
-                ghdl -s $iTESTBENCH.vhd
                 echo "Analyzing $iMODULE.vhd..."
                 ghdl -a $iMODULE.vhd
+                echo "Syntesysing $iTESTBENCH.vhd..."
+                ghdl -s $iTESTBENCH.vhd
                 # ghdl -a -Wa,--32 $iMODULE.vhd
                 echo "Analyzing $TESTBENCH.vhd..."
                 ghdl -a $iTESTBENCH.vhd
@@ -67,10 +67,10 @@ function runghdl () {
         -r) 
             echo "Syntesysing $iMODULE.vhd..."
             ghdl -s $iMODULE.vhd
-            echo "Syntesysing $iTESTBENCH.vhd..."
-            ghdl -s $iTESTBENCH.vhd
             echo "Analyzing $iMODULE.vhd..."
             ghdl -a $iMODULE.vhd
+            echo "Syntesysing $iTESTBENCH.vhd..."
+            ghdl -s $iTESTBENCH.vhd
             # ghdl -a -Wa,--32 $iMODULE.vhd
             echo "Analyzing $iTESTBENCH.vhd..."
             ghdl -a $iTESTBENCH.vhd
